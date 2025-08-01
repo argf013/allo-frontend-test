@@ -1,3 +1,29 @@
+<script setup lang="ts">
+  interface Props {
+    message?: string
+    size?: number
+    width?: number
+    minHeight?: string
+    isError?: boolean
+    errorMessage?: string
+    retryText?: string
+  }
+
+  withDefaults(defineProps<Props>(), {
+    message: '',
+    size: 64,
+    width: 4,
+    minHeight: '200px',
+    isError: false,
+    errorMessage: 'Something went wrong. Please try again.',
+    retryText: 'Retry'
+  })
+
+  defineEmits<{
+    retry: []
+  }>()
+</script>
+
 <template>
   <v-container
     class="d-flex justify-center align-center"
@@ -47,29 +73,3 @@
     </div>
   </v-container>
 </template>
-
-<script setup lang="ts">
-  interface Props {
-    message?: string
-    size?: number
-    width?: number
-    minHeight?: string
-    isError?: boolean
-    errorMessage?: string
-    retryText?: string
-  }
-
-  withDefaults(defineProps<Props>(), {
-    message: '',
-    size: 64,
-    width: 4,
-    minHeight: '200px',
-    isError: false,
-    errorMessage: 'Something went wrong. Please try again.',
-    retryText: 'Retry'
-  })
-
-  defineEmits<{
-    retry: []
-  }>()
-</script>

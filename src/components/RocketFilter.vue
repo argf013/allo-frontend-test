@@ -1,3 +1,43 @@
+<script setup lang="ts">
+  import { reactive } from 'vue'
+
+  interface FilterData {
+    search: string
+    status: string | null
+  }
+
+  interface Props {
+    modelValue?: FilterData
+  }
+
+  interface Emits {
+    (e: 'update:modelValue', value: FilterData): void
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    modelValue: () => ({ search: '', status: null })
+  })
+
+  const emit = defineEmits<Emits>()
+
+  const filters = reactive<FilterData>({ ...props.modelValue })
+
+  const statusOptions = [
+    { title: 'Active', value: 'active' },
+    { title: 'Inactive', value: 'inactive' }
+  ]
+
+  const updateFilters = () => {
+    emit('update:modelValue', { ...filters })
+  }
+
+  const clearFilters = () => {
+    filters.search = ''
+    filters.status = null
+    updateFilters()
+  }
+</script>
+
 <template>
   <v-card class="mb-4">
     <v-card-title>Filter Rockets</v-card-title>
@@ -44,43 +84,3 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script setup lang="ts">
-  import { reactive } from 'vue'
-
-  interface FilterData {
-    search: string
-    status: string | null
-  }
-
-  interface Props {
-    modelValue?: FilterData
-  }
-
-  interface Emits {
-    (e: 'update:modelValue', value: FilterData): void
-  }
-
-  const props = withDefaults(defineProps<Props>(), {
-    modelValue: () => ({ search: '', status: null })
-  })
-
-  const emit = defineEmits<Emits>()
-
-  const filters = reactive<FilterData>({ ...props.modelValue })
-
-  const statusOptions = [
-    { title: 'Active', value: 'active' },
-    { title: 'Inactive', value: 'inactive' }
-  ]
-
-  const updateFilters = () => {
-    emit('update:modelValue', { ...filters })
-  }
-
-  const clearFilters = () => {
-    filters.search = ''
-    filters.status = null
-    updateFilters()
-  }
-</script>

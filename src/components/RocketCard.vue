@@ -1,3 +1,28 @@
+<script setup lang="ts">
+  import type { Rocket } from '@/types/rocket'
+  import { computed } from 'vue'
+
+  interface Props {
+    rocket: Rocket
+  }
+
+  const props = defineProps<Props>()
+
+  const truncatedDescription = computed(() => {
+    if (!props.rocket.description) return ''
+    return props.rocket.description.length > 100
+      ? props.rocket.description.substring(0, 100) + '...'
+      : props.rocket.description
+  })
+
+  const rocketImageUrl = computed(() => {
+    if (props.rocket.flickr_images && props.rocket.flickr_images.length > 0) {
+      return props.rocket.flickr_images[0]
+    }
+    return 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80'
+  })
+</script>
+
 <template>
   <v-card
     class="rocket-card"
@@ -24,31 +49,6 @@
     </v-card-text>
   </v-card>
 </template>
-
-<script setup lang="ts">
-  import type { Rocket } from '@/types/rocket'
-  import { computed } from 'vue'
-
-  interface Props {
-    rocket: Rocket
-  }
-
-  const props = defineProps<Props>()
-
-  const truncatedDescription = computed(() => {
-    if (!props.rocket.description) return ''
-    return props.rocket.description.length > 100
-      ? props.rocket.description.substring(0, 100) + '...'
-      : props.rocket.description
-  })
-
-  const rocketImageUrl = computed(() => {
-    if (props.rocket.flickr_images && props.rocket.flickr_images.length > 0) {
-      return props.rocket.flickr_images[0]
-    }
-    return 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200&q=80'
-  })
-</script>
 
 <style scoped>
   .rocket-card {

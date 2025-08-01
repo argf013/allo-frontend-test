@@ -1,82 +1,3 @@
-<template>
-  <v-container>
-    <div class="d-flex justify-space-between align-center mb-4">
-      <h1 class="text-h4">
-        Rockets
-      </h1>
-      <v-btn
-        color="primary"
-        variant="flat"
-        @click="openCreateDialog"
-      >
-        <v-icon start>
-          mdi-plus
-        </v-icon>
-        Add Rocket
-      </v-btn>
-    </div>
-
-    <RocketFilter v-model="filters" />
-
-    <LoadingState
-      v-if="loading || error"
-      :message="loading ? 'Loading rockets...' : undefined"
-      :is-error="!!error"
-      :error-message="errorMessage"
-      @retry="loadRockets"
-    />
-
-    <div v-else-if="!loading && !error">
-      <v-row>
-        <v-col
-          v-for="rocket in filteredRockets"
-          :key="rocket.id"
-          cols="12"
-          sm="6"
-          md="4"
-          lg="3"
-        >
-          <RocketCard
-            :rocket="rocket"
-            @click="viewRocket(rocket)"
-          />
-        </v-col>
-      </v-row>
-
-      <div
-        v-if="filteredRockets.length === 0"
-        class="text-center py-8"
-      >
-        <v-icon
-          size="64"
-          color="grey"
-        >
-          mdi-rocket
-        </v-icon>
-        <h3 class="text-h6 mt-2">
-          No rockets found
-        </h3>
-        <p class="text-body-2">
-          Try adjusting your filters or add a new rocket.
-        </p>
-      </div>
-    </div>
-
-    <!-- Form Dialog -->
-    <v-dialog
-      v-model="formDialog"
-      max-width="800"
-    >
-      <RocketForm
-        :model-value="rocketStore.selectedRocket || undefined"
-        :loading="formLoading"
-        @submit="handleFormSubmit"
-        @cancel="formDialog = false"
-      />
-    </v-dialog>
-  </v-container>
-</template>
-
 <script setup lang="ts">
   import { ref, onMounted, computed } from 'vue'
   import { useRouter } from 'vue-router'
@@ -182,3 +103,82 @@
     await loadRockets()
   })
 </script>
+
+<template>
+  <v-container>
+    <div class="d-flex justify-space-between align-center mb-4">
+      <h1 class="text-h4">
+        Rockets
+      </h1>
+      <v-btn
+        color="primary"
+        variant="flat"
+        @click="openCreateDialog"
+      >
+        <v-icon start>
+          mdi-plus
+        </v-icon>
+        Add Rocket
+      </v-btn>
+    </div>
+
+    <RocketFilter v-model="filters" />
+
+    <LoadingState
+      v-if="loading || error"
+      :message="loading ? 'Loading rockets...' : undefined"
+      :is-error="!!error"
+      :error-message="errorMessage"
+      @retry="loadRockets"
+    />
+
+    <div v-else-if="!loading && !error">
+      <v-row>
+        <v-col
+          v-for="rocket in filteredRockets"
+          :key="rocket.id"
+          cols="12"
+          sm="6"
+          md="4"
+          lg="3"
+        >
+          <RocketCard
+            :rocket="rocket"
+            @click="viewRocket(rocket)"
+          />
+        </v-col>
+      </v-row>
+
+      <div
+        v-if="filteredRockets.length === 0"
+        class="text-center py-8"
+      >
+        <v-icon
+          size="64"
+          color="grey"
+        >
+          mdi-rocket
+        </v-icon>
+        <h3 class="text-h6 mt-2">
+          No rockets found
+        </h3>
+        <p class="text-body-2">
+          Try adjusting your filters or add a new rocket.
+        </p>
+      </div>
+    </div>
+
+    <!-- Form Dialog -->
+    <v-dialog
+      v-model="formDialog"
+      max-width="800"
+    >
+      <RocketForm
+        :model-value="rocketStore.selectedRocket || undefined"
+        :loading="formLoading"
+        @submit="handleFormSubmit"
+        @cancel="formDialog = false"
+      />
+    </v-dialog>
+  </v-container>
+</template>

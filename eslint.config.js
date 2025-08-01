@@ -31,6 +31,9 @@ export default [
         },
       ],
       'vue/multi-word-component-names': 'off',
+      'vue/block-order': ['error', {
+        order: ['script', 'template', 'style']
+      }]
     }
   }
 ]

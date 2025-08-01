@@ -1,3 +1,39 @@
+<script setup lang="ts">
+  import { ref, onMounted } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { useRocketStore } from '@/store/rocketStore'
+  import LoadingState from '@/components/LoadingState.vue'
+
+  const route = useRoute()
+  const rocketStore = useRocketStore()
+
+  const loading = ref(false)
+  const error = ref(false)
+  const errorMessage = ref('')
+
+  const loadRocket = async () => {
+    const id = route.params.id as string
+    loading.value = true
+    error.value = false
+    errorMessage.value = ''
+
+    try {
+      await rocketStore.fetchRocket(id)
+    } catch (err) {
+      console.error('Failed to load rocket:', err)
+      error.value = true
+      errorMessage.value =
+        'Failed to load rocket details. Please check your connection and try again.'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  onMounted(async () => {
+    await loadRocket()
+  })
+</script>
+
 <template>
   <v-container>
     <LoadingState
@@ -120,39 +156,3 @@
     </div>
   </v-container>
 </template>
-
-<script setup lang="ts">
-  import { ref, onMounted } from 'vue'
-  import { useRoute } from 'vue-router'
-  import { useRocketStore } from '@/store/rocketStore'
-  import LoadingState from '@/components/LoadingState.vue'
-
-  const route = useRoute()
-  const rocketStore = useRocketStore()
-
-  const loading = ref(false)
-  const error = ref(false)
-  const errorMessage = ref('')
-
-  const loadRocket = async () => {
-    const id = route.params.id as string
-    loading.value = true
-    error.value = false
-    errorMessage.value = ''
-
-    try {
-      await rocketStore.fetchRocket(id)
-    } catch (err) {
-      console.error('Failed to load rocket:', err)
-      error.value = true
-      errorMessage.value =
-        'Failed to load rocket details. Please check your connection and try again.'
-    } finally {
-      loading.value = false
-    }
-  }
-
-  onMounted(async () => {
-    await loadRocket()
-  })
-</script>
